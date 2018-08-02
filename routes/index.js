@@ -1,7 +1,17 @@
-var express = require("express");
+const { Router } = require("express");
+const UsersController = require("../controllers/users");
+const TokensController = require("../controllers/tokens");
 
-module.exports = app => {
-  app.get("/", function(req, res, next) {
-    res.send("respond with a resource");
-  });
-};
+const root = Router();
+const users = Router();
+const tokens = Router();
+
+// Users Routes
+root.use("/users", users);
+root.use("/tokens", tokens);
+users.get("/new", UsersController.new);
+users.post("/", UsersController.create);
+// tokens.get("/currentUser", TokensController.currentUser);
+tokens.post("/", TokensController.create);
+
+module.exports = root;
