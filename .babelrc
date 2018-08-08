@@ -9,8 +9,9 @@
         "useBuiltIns": "entry"
       }
     ],
+    "es2015",
     "stage-2",
     "react"
   ],
-  "plugins": ["syntax-dynamic-import"]
+  "plugins": ["syntax-dynamic-import", "transform-async-to-generator"]
 }

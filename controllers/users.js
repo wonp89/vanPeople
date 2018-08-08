@@ -7,8 +7,8 @@ const UsersController = {
   },
 
   async create(req, res, next) {
-    const { email, password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
+    const { email, password, passwordConfirmation } = req.body;
+    if (password !== passwordConfirmation) {
       res.json({ error: "Password does not match" });
     }
     try {

@@ -25,10 +25,6 @@ const TokensController = {
       next(error);
     }
   }
-
-  //   currentUser(req, res, next) {
-  //     res.send(req.currentUser);
-  //   }
 };
 
 module.exports = TokensController;

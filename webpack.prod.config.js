@@ -7,12 +7,12 @@ const webpack = require("webpack");
 
 module.exports = {
   devtool: "cheap-module-source-map",
-  entry: "./src/index.js",
+  entry: ["babel-polyfill", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     chunkFilename: "[id].js",
-    publicPath: ""
+    publicPath: "/"
   },
   resolve: {
     extensions: [".js", ".jsx"]
@@ -62,6 +62,15 @@ module.exports = {
         loader: "file-loader?name=/src/assets/images/[name].[ext]"
       }
     ]
+  },
+  // redirect 404s to /index.html.
+  devServer: {
+    historyApiFallback: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000"
+      }
+    }
   },
   plugins: [
     //for using media query
