@@ -25,7 +25,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(css|scss|sass)$/,
+        test: /\.css$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
@@ -48,8 +48,7 @@ module.exports = {
                   })
                 ]
               }
-            },
-            { loader: "sass-loader" }
+            }
           ]
         })
       },
@@ -74,7 +73,7 @@ module.exports = {
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      test: /\.(css|scss|sass)$/,
+      test: /\.css$/,
       options: {
         postcss: [
           require("postcss-import")(),

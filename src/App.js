@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "./store/actions/index";
 
 //components
 import Welcome from "./components/Welcome/Welcome";
@@ -8,6 +10,10 @@ import SignInForm from "./containers/User/SignInForm";
 import Navigation from "./components/Navigation/NavigationItems/Navigation";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.signedIn();
+  }
+
   render() {
     return (
       <div className="App">
@@ -28,4 +34,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    signedIn: () => dispatch(actions.userSignedIn())
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);

@@ -1,10 +1,10 @@
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
-var jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const initialState = {
-  token: null,
   userId: null,
+  email: null,
   error: null,
   loading: false
 };
@@ -17,9 +17,16 @@ const userSuccess = (state, action) => {
   localStorage.setItem("token", action.userData.jwt);
   let userData = jwt.decode(action.userData.jwt);
   return updateObject(state, {
-    email: userData.user.email,
     userId: userData.user.id,
+    email: userData.user.email,
     error: null,
+    loading: false
+  });
+};
+
+const userFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
     loading: false
   });
 };
@@ -27,8 +34,17 @@ const userSuccess = (state, action) => {
 const userSignout = (state, action) => {
   localStorage.clear();
   return updateObject(state, {
-    token: null,
-    userId: null,
+    email: null,
+    userId: null
+  });
+};
+
+const userSignedIn = (state, action) => {
+  let token = localStorage.getItem("token");
+  let userData = token ? jwt.decode(token) : null;
+  return updateObject(state, {
+    email: userData ? userData.user.email : null,
+    userId: userData ? userData.user.id : null,
     error: null,
     loading: false
   });
@@ -44,6 +60,8 @@ const reducer = (state = initialState, action) => {
       return userFail(state, action);
     case actionTypes.USER_SIGNOUT:
       return userSignout(state, action);
+    case actionTypes.USER_SIGNEDIN:
+      return userSignedIn(state, action);
     default:
       return state;
   }

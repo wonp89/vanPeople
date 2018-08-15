@@ -28,6 +28,12 @@ export const userSignout = () => {
   };
 };
 
+export const userSignedIn = userData => {
+  return {
+    type: actionTypes.USER_SIGNEDIN
+  };
+};
+
 export const user = ({ email, password, passwordConfirmation = null }) => {
   return async dispatch => {
     dispatch(userStart());

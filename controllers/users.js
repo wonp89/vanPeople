@@ -1,5 +1,6 @@
 const kx = require("../db/connection");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const UsersController = {
   new(req, res, next) {
@@ -18,7 +19,12 @@ const UsersController = {
         .into("users")
         .returning("*");
       if (user) {
-        res.json(user);
+        const payload = {
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+          user: user
+        };
+        token = jwt.sign(payload, "supersecret");
+        res.json({ jwt: token });
       } else {
         res.json({ error: "Something went wrong" });
       }
