@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 
 //components
-import Aux from "../../../hoc/Aux/Aux";
 import Modal from "../../UI/Modal/Modal";
 import SignInForm from "../../../containers/User/SignInForm";
 import SignUpForm from "../../../containers/User/SignUpForm";
@@ -28,37 +27,42 @@ class Navigation extends Component {
 
   render() {
     let navLink = (
-      <Aux>
-        <NavLink to="/">Home</NavLink> |
+      <React.Fragment>
+        <NavLink to="/">&nbsp;Home</NavLink> |
         <span
           onClick={() => {
             this.showModalHandler();
             this.AuthFormToSignIn();
           }}
         >
-          Sign In
+          &nbsp;Sign In
         </span>
-        |
+        &nbsp;|
         <span
           onClick={() => {
             this.showModalHandler();
             this.AuthFormToSignUp();
           }}
         >
-          Sign Up
+          &nbsp;Sign Up
         </span>
-      </Aux>
+      </React.Fragment>
     );
 
     if (this.props.userId) {
       navLink = (
-        <Aux>
-          <NavLink to="/">Home</NavLink> |
-          <span onClick={() => this.props.signOut()}>Sign Out</span>
-        </Aux>
+        <React.Fragment>
+          <NavLink to="/">&nbsp;Home</NavLink> |
+          <span onClick={() => this.props.signOut()}>&nbsp;Sign Out</span> |
+          <span>
+            &nbsp;
+            {this.props.email}
+          </span>
+        </React.Fragment>
       );
     }
 
+    //switch between SignInForm and SignUpForm
     let authModal;
     if (this.state.authForm) {
       authModal = <SignInForm closeModal={() => this.showModalHandler()} />;
@@ -70,7 +74,8 @@ class Navigation extends Component {
       <div>
         <Modal
           show={this.state.showModal}
-          clicked={() => this.showModalHandler()}
+          loading={this.props.loading}
+          modalClosed={() => this.showModalHandler()}
         >
           {authModal}
         </Modal>

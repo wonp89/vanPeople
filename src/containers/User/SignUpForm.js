@@ -1,77 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SignUpFormFields from "./SignUpFormFields";
-import { Formik } from "formik";
 import * as actions from "../../store/actions/index";
+
 import { Spinner } from "../../components/UI/Spinner/Spinner";
+import { SignUpFormik } from "./AuthForms";
+import Error from "./Error";
 
 class SignUpForm extends Component {
+  state = { countDown: 4 };
+
   render() {
-    let signUpForm = (
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          passwordConfirmation: ""
-        }}
-        onSubmit={(values, { setSubmitting, setErrors }) => {
-          this.props.onAuth(values).then(() => {
-            if (this.props.userId) {
-              this.props.closeModal();
-            }
-          });
-        }}
-        validate={values => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = "Email is required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-
-          if (!values.password) errors.password = "Password is required";
-
-          if (!values.passwordConfirmation) {
-            errors.passwordConfirmation = "Password confirmation is required";
-          } else if (values.passwordConfirmation !== values.password) {
-            errors.passwordConfirmation = "Passwords do not match";
-          }
-
-          return errors;
-        }}
-        render={({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting
-        }) => (
-          <SignUpFormFields
-            values={values}
-            errors={errors}
-            touched={touched}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            handleSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-          />
-        )}
+    return this.props.loading ? (
+      <Spinner />
+    ) : this.props.error ? (
+      <Error />
+    ) : (
+      <SignUpFormik
+        closeModal={this.props.closeModal}
+        userId={this.props.userId}
+        invalid={this.props.invalid}
+        onAuth={this.props.onAuth}
       />
-    );
-
-    if (this.props.loading) {
-      signUpForm = <Spinner />;
-    }
-
-    return (
-      <div className="container">
-        <h1>Sign Up</h1>
-        {signUpForm}
-      </div>
     );
   }
 }

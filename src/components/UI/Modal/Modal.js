@@ -1,13 +1,14 @@
 import React from "react";
 import { DisplayModal } from "./ModalStyle";
-import Aux from "../../../hoc/Aux/Aux";
-import { Backdrop } from "../Backdrop/Backdrop";
+import { Backdrop } from "./Backdrop";
 
 const Modal = props => (
-  <Aux>
-    <Backdrop onClick={props.clicked} show={props.show} />
-    <DisplayModal show={props.show}>{props.children}</DisplayModal>
-  </Aux>
+  <React.Fragment>
+    <Backdrop onClick={props.modalClosed} show={props.show} />
+    <DisplayModal loading={props.loading} show={props.show}>
+      {props.children}
+    </DisplayModal>
+  </React.Fragment>
 );
 
 export default Modal;

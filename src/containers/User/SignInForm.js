@@ -1,70 +1,27 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SignInFormFields from "./SignInFormFields";
-import { Formik } from "formik";
 import * as actions from "../../store/actions/index";
+
+//components
 import { Spinner } from "../../components/UI/Spinner/Spinner";
+import { SignInFormik } from "./AuthForms";
+import Error from "./Error";
 
 class SignInForm extends Component {
+  state = { countDown: 4 };
+
   render() {
-    let signInForm = (
-      <Formik
-        initialValues={{
-          email: "",
-          password: ""
-        }}
-        onSubmit={(values, { setSubmitting, setErrors }) => {
-          this.props.onAuth(values).then(() => {
-            if (this.props.userId) {
-              this.props.closeModal();
-            }
-          });
-        }}
-        validate={values => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = "Email is required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-
-          if (!values.password) errors.password = "Password is required";
-
-          return errors;
-        }}
-        render={({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting
-        }) => (
-          <SignInFormFields
-            values={values}
-            errors={errors}
-            touched={touched}
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            handleSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-          />
-        )}
+    return this.props.loading ? (
+      <Spinner />
+    ) : this.props.error ? (
+      <Error />
+    ) : (
+      <SignInFormik
+        closeModal={this.props.closeModal}
+        userId={this.props.userId}
+        invalid={this.props.invalid}
+        onAuth={this.props.onAuth}
       />
-    );
-
-    if (this.props.loading) {
-      signInForm = <Spinner />;
-    }
-
-    return (
-      <div className="container">
-        <h1>Sign In</h1>
-        {signInForm}
-      </div>
     );
   }
 }
@@ -72,8 +29,8 @@ class SignInForm extends Component {
 const mapStateToProps = state => {
   return {
     userId: state.user.userId,
-    email: state.user.email,
     error: state.user.error,
+    invalid: state.user.invalid,
     loading: state.user.loading
   };
 };

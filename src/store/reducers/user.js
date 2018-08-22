@@ -6,6 +6,7 @@ const initialState = {
   userId: null,
   email: null,
   error: null,
+  invalid: null,
   loading: false
 };
 
@@ -14,12 +15,21 @@ const userStart = (state, action) => {
 };
 
 const userSuccess = (state, action) => {
+  // if user is invalid when logged in
+  if (action.userData.invalidUser) {
+    return updateObject(state, {
+      invalid: action.userData.invalidUser,
+      loading: false
+    });
+  }
+
   localStorage.setItem("token", action.userData.jwt);
   let userData = jwt.decode(action.userData.jwt);
   return updateObject(state, {
     userId: userData.user.id,
     email: userData.user.email,
     error: null,
+    invalid: null,
     loading: false
   });
 };
@@ -27,6 +37,7 @@ const userSuccess = (state, action) => {
 const userFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
+    invalid: null,
     loading: false
   });
 };
@@ -44,9 +55,7 @@ const userSignedIn = (state, action) => {
   let userData = token ? jwt.decode(token) : null;
   return updateObject(state, {
     email: userData ? userData.user.email : null,
-    userId: userData ? userData.user.id : null,
-    error: null,
-    loading: false
+    userId: userData ? userData.user.id : null
   });
 };
 

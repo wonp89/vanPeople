@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { AuthForm, ErrorMessage } from "./UserStyle.js";
-import Aux from "../../hoc/Aux/Aux";
+import { AuthForm, ErrorMessage, Input, InputContainer } from "./UserStyle";
+import { Button } from "../../components/UI/Button/Button";
 
 const SignInFormFields = ({
   values,
@@ -13,24 +13,26 @@ const SignInFormFields = ({
   isSubmitting
 }) => {
   let form = Object.keys(values).map((v, i) => (
-    <Aux key={i}>
-      <label>{v.replace(/^\w/, i => i.toUpperCase())}</label>
-      <input
+    <InputContainer key={i}>
+      <Input
         type={v}
         name={v}
+        placeholder={v.replace(/^\w/, i => i.toUpperCase())}
         onChange={handleChange}
         onBlur={handleBlur}
         value={values.v}
       />
       {touched[v] && errors[v] && <ErrorMessage>{errors[v]}</ErrorMessage>}
-      <br />
-    </Aux>
+    </InputContainer>
   ));
 
   return (
     <AuthForm onSubmit={handleSubmit}>
+      <h1>Login</h1>
       {form}
-      <button type="submit">SUBMIT</button>
+      <Button primary type="submit">
+        SUBMIT
+      </Button>
     </AuthForm>
   );
 };

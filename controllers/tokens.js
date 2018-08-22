@@ -19,7 +19,7 @@ const TokensController = {
         token = jwt.sign(payload, "supersecret");
         res.json({ jwt: token });
       } else {
-        res.json({ error: "Something went wrong" });
+        res.json({ invalidUser: "Your email or password is incorrect." });
       }
     } catch (error) {
       next(error);

@@ -52,9 +52,9 @@ export const user = ({ email, password, passwordConfirmation = null }) => {
       const res = await axios.post(url, userData);
       console.log(res);
       dispatch(userSuccess(res.data));
-    } catch (err) {
-      console.log(err);
-      dispatch(userFail(err));
+    } catch (error) {
+      console.log(error);
+      dispatch(userFail(error));
     }
   };
 };

@@ -17,8 +17,8 @@ export const Spinner = styled.div`
   &:after {
     content: " ";
     display: block;
-    width: 46px;
-    height: 46px;
+    width: 60px;
+    height: 60px;
     margin: 1px;
     border-radius: 50%;
     border: 5px solid red;
