@@ -8,6 +8,9 @@ import * as actions from "./store/actions/index";
 import Welcome from "./components/Welcome/Welcome";
 import Navigation from "./components/Navigation/NavigationItems/Navigation";
 
+//testing
+import TestingQuery from './components/Welcome/TestingQuery/TestingQuery';
+
 class App extends Component {
   componentDidMount() {
     this.props.signedIn();
@@ -22,6 +25,7 @@ class App extends Component {
             <Navigation />
             <Switch>
               <Route path="/" component={Welcome} exact />
+              <Route path="/testing" component={TestingQuery} exact />
             </Switch>
           </div>
         </BrowserRouter>

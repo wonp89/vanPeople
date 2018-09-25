@@ -58,6 +58,7 @@ class Navigation extends Component {
       navLink = (
         <React.Fragment>
           <NavLink to="/">&nbsp;Home</NavLink> |
+          <NavLink to={"/testing/?email=" + this.props.email + "&id=" + this.props.userId} >&nbsp;Testing</NavLink> |
           <span onClick={() => this.props.signOut(this.props.history)}>&nbsp;Sign Out</span> |
           <span>
             &nbsp;
