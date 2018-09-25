@@ -8,8 +8,6 @@ import { SignInFormik } from "./AuthForms";
 import Error from "./Error";
 
 class SignInForm extends Component {
-  state = { countDown: 4 };
-
   render() {
     return this.props.loading ? (
       <Spinner />

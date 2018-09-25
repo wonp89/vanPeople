@@ -15,6 +15,7 @@ const SignUpFormFields = ({
   let form = Object.keys(values).map((v, i) => (
     <InputContainer key={i}>
       <Input
+        autoFocus={v === "email" ? true : false}
         type={v === "passwordConfirmation" ? "password" : v}
         name={v}
         placeholder={

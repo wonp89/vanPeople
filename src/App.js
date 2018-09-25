@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
@@ -5,8 +6,6 @@ import * as actions from "./store/actions/index";
 
 //components
 import Welcome from "./components/Welcome/Welcome";
-import SignUpForm from "./containers/User/SignUpForm";
-import SignInForm from "./containers/User/SignInForm";
 import Navigation from "./components/Navigation/NavigationItems/Navigation";
 
 class App extends Component {
@@ -23,8 +22,6 @@ class App extends Component {
             <Navigation />
             <Switch>
               <Route path="/" component={Welcome} exact />
-              <Route path="/user" component={SignInForm} exact />
-              <Route path="/user/new" component={SignUpForm} />
             </Switch>
           </div>
         </BrowserRouter>
@@ -33,6 +30,16 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    userId: state.user.userId,
+    email: state.user.email,
+    error: state.user.error,
+    loading: state.user.loading,
+    expireIn: state.user.expireIn
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     signedIn: () => dispatch(actions.userSignedIn())
@@ -40,6 +47,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);

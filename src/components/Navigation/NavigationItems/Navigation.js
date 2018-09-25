@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 
@@ -10,6 +11,10 @@ import SignUpForm from "../../../containers/User/SignUpForm";
 
 class Navigation extends Component {
   state = { showModal: false, authForm: false };
+
+  componentDidMount() {
+    this.props.autoSignupOrSignOut(this.props.history);
+  }
 
   showModalHandler() {
     this.setState(prevState => {
@@ -53,7 +58,7 @@ class Navigation extends Component {
       navLink = (
         <React.Fragment>
           <NavLink to="/">&nbsp;Home</NavLink> |
-          <span onClick={() => this.props.signOut()}>&nbsp;Sign Out</span> |
+          <span onClick={() => this.props.signOut(this.props.history)}>&nbsp;Sign Out</span> |
           <span>
             &nbsp;
             {this.props.email}
@@ -97,11 +102,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signOut: () => dispatch(actions.userSignout())
+    signOut: (props) => dispatch(actions.userSignout(props)),
+    autoSignupOrSignOut: (props) => dispatch(actions.userCheckState(props))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navigation);
+)(withRouter(Navigation));

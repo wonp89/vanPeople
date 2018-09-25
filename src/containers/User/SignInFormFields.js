@@ -15,6 +15,7 @@ const SignInFormFields = ({
   let form = Object.keys(values).map((v, i) => (
     <InputContainer key={i}>
       <Input
+        autoFocus={v === "email" ? true : false}
         type={v}
         name={v}
         placeholder={v.replace(/^\w/, i => i.toUpperCase())}

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 //components
 import { ErrorMessage } from "./UserStyle.js";
 
-class Error extends Component {
+class Error extends PureComponent {
   state = { currentCount: 4 };
 
   countDown() {
@@ -16,11 +16,11 @@ class Error extends Component {
     }
   }
 
-  render() {
-    if (!this.countdownInterval) {
-      this.countdownInterval = setInterval(this.countDown.bind(this), 1000);
-    }
+  componentDidMount() {
+    window.setInterval(this.countDown.bind(this), 1000);
+  }
 
+  render() {
     return (
       <React.Fragment>
         <h3>OOPS! SOMETHING WENT WRONG!</h3>

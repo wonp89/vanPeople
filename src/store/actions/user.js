@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
 //to setup loading image while logging in or sigining up
 export const userStart = () => {
@@ -22,13 +23,41 @@ export const userFail = error => {
   };
 };
 
-export const userSignout = () => {
+export const userSignout = (props) => {
+  props.push('/');
   return {
     type: actionTypes.USER_SIGNOUT
   };
 };
 
-export const userSignedIn = userData => {
+export const checkUserTimeout = (expirationTime, props) => {
+  console.log(`user expire in 2hrs`)
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(userSignout(props));
+    }, expirationTime * 1000); // 2hrs
+  };
+};
+
+export const userCheckState = (props) => {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      dispatch(userSignout(props));
+    } else {
+      // 2hrs after current time
+      const expirationTime = new Date(jwt.decode(token).exp * 1000)
+      if (expirationTime >= new Date()) {
+        //future time(2hrs after) - current time
+        dispatch(checkUserTimeout(((expirationTime.getTime() - new Date().getTime()) / 1000), props))
+      } else {
+        dispatch(userSignout(props))
+      }
+    }
+  }
+}
+
+export const userSignedIn = () => {
   return {
     type: actionTypes.USER_SIGNEDIN
   };
@@ -52,6 +81,7 @@ export const user = ({ email, password, passwordConfirmation = null }) => {
       const res = await axios.post(url, userData);
       console.log(res);
       dispatch(userSuccess(res.data));
+      // dispatch(checkUserTimeout(jwt.decode(res.data.jwt).exp));
     } catch (error) {
       console.log(error);
       dispatch(userFail(error));

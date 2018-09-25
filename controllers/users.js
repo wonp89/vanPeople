@@ -12,6 +12,7 @@ const UsersController = {
     if (password !== passwordConfirmation) {
       res.json({ error: "Password does not match" });
     }
+
     try {
       const passwordDigest = await bcrypt.hash(password, 10);
       const [user] = await kx
@@ -20,7 +21,7 @@ const UsersController = {
         .returning("*");
       if (user) {
         const payload = {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2, // * 1000 = 2hrs
           user: user
         };
         token = jwt.sign(payload, "supersecret");

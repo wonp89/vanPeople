@@ -72,6 +72,10 @@ module.exports = {
     }
   },
   plugins: [
+    //for production optimization
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
     //for using media query
     new webpack.LoaderOptionsPlugin({
       test: /\.css$/,

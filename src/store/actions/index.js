@@ -1,1 +1,1 @@
-export { user, userSignout, userSignedIn } from "./user";
+export { user, userSignout, userSignedIn, userCheckState } from "./user";

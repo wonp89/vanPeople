@@ -7,21 +7,19 @@ import { SignUpFormik } from "./AuthForms";
 import Error from "./Error";
 
 class SignUpForm extends Component {
-  state = { countDown: 4 };
-
   render() {
     return this.props.loading ? (
       <Spinner />
     ) : this.props.error ? (
       <Error />
     ) : (
-      <SignUpFormik
-        closeModal={this.props.closeModal}
-        userId={this.props.userId}
-        invalid={this.props.invalid}
-        onAuth={this.props.onAuth}
-      />
-    );
+          <SignUpFormik
+            closeModal={this.props.closeModal}
+            userId={this.props.userId}
+            invalid={this.props.invalid}
+            onAuth={this.props.onAuth}
+          />
+        );
   }
 }
 

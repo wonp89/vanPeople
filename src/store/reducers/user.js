@@ -6,6 +6,7 @@ const initialState = {
   userId: null,
   email: null,
   error: null,
+  expireIn: 0,
   invalid: null,
   loading: false
 };
@@ -28,6 +29,7 @@ const userSuccess = (state, action) => {
   return updateObject(state, {
     userId: userData.user.id,
     email: userData.user.email,
+    expireIn: userData.exp,
     error: null,
     invalid: null,
     loading: false
@@ -45,6 +47,7 @@ const userFail = (state, action) => {
 const userSignout = (state, action) => {
   localStorage.clear();
   return updateObject(state, {
+    expireIn: 0,
     email: null,
     userId: null
   });
@@ -54,8 +57,9 @@ const userSignedIn = (state, action) => {
   let token = localStorage.getItem("token");
   let userData = token ? jwt.decode(token) : null;
   return updateObject(state, {
+    userId: userData ? userData.user.id : null,
     email: userData ? userData.user.email : null,
-    userId: userData ? userData.user.id : null
+    expireIn: userData ? userData.exp : null
   });
 };
 
