@@ -34,6 +34,7 @@ class Navigation extends Component {
     let navLink = (
       <React.Fragment>
         <NavLink to="/">&nbsp;Home</NavLink> |
+        <NavLink to={"/testing/?email=" + this.props.email + "&id=" + this.props.userId} >&nbsp;Testing</NavLink> |
         <span
           onClick={() => {
             this.showModalHandler();
@@ -58,7 +59,6 @@ class Navigation extends Component {
       navLink = (
         <React.Fragment>
           <NavLink to="/">&nbsp;Home</NavLink> |
-          <NavLink to={"/testing/?email=" + this.props.email + "&id=" + this.props.userId} >&nbsp;Testing</NavLink> |
           <span onClick={() => this.props.signOut(this.props.history)}>&nbsp;Sign Out</span> |
           <span>
             &nbsp;
@@ -69,11 +69,9 @@ class Navigation extends Component {
     }
 
     //switch between SignInForm and SignUpForm
-    let authModal;
+    let authModal = <SignUpForm closeModal={() => this.showModalHandler()} />;
     if (this.state.authForm) {
       authModal = <SignInForm closeModal={() => this.showModalHandler()} />;
-    } else {
-      authModal = <SignUpForm closeModal={() => this.showModalHandler()} />;
     }
 
     return (

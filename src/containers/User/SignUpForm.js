@@ -5,6 +5,7 @@ import * as actions from "../../store/actions/index";
 import { Spinner } from "../../components/UI/Spinner/Spinner";
 import { SignUpFormik } from "./AuthForms";
 import Error from "./Error";
+import { withRouter } from 'react-router';
 
 class SignUpForm extends Component {
   render() {
@@ -18,6 +19,7 @@ class SignUpForm extends Component {
             userId={this.props.userId}
             invalid={this.props.invalid}
             onAuth={this.props.onAuth}
+            redirect={this.props.history}
           />
         );
   }
@@ -42,4 +44,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignUpForm);
+)(withRouter(SignUpForm));

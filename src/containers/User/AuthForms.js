@@ -22,7 +22,7 @@ class SignInFormik extends Component {
             password: ""
           }}
           onSubmit={(values, { setSubmitting, setErrors }) => {
-            this.props.onAuth(values);
+            this.props.onAuth(values, this.props.redirect);
           }}
           validate={values => {
             const errors = {};
@@ -47,16 +47,16 @@ class SignInFormik extends Component {
             handleSubmit,
             isSubmitting
           }) => (
-            <SignInFormFields
-              values={values}
-              errors={errors}
-              touched={touched}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              handleSubmit={handleSubmit}
-              isSubmitting={isSubmitting}
-            />
-          )}
+              <SignInFormFields
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                handleSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+              />
+            )}
         />
         {this.props.invalid ? (
           <ErrorMessage>{this.props.invalid}</ErrorMessage>
@@ -83,7 +83,7 @@ class SignUpFormik extends Component {
             passwordConfirmation: ""
           }}
           onSubmit={(values, { setSubmitting, setErrors }) => {
-            this.props.onAuth(values);
+            this.props.onAuth(values, this.props.redirect);
           }}
           validate={values => {
             const errors = {};
@@ -114,16 +114,16 @@ class SignUpFormik extends Component {
             handleSubmit,
             isSubmitting
           }) => (
-            <SignUpFormFields
-              values={values}
-              errors={errors}
-              touched={touched}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-              handleSubmit={handleSubmit}
-              isSubmitting={isSubmitting}
-            />
-          )}
+              <SignUpFormFields
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                handleSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+              />
+            )}
         />
         {/* if invalid user */}
         {this.props.invalid ? (

@@ -6,7 +6,7 @@ import * as actions from "../../store/actions/index";
 import { Spinner } from "../../components/UI/Spinner/Spinner";
 import { SignInFormik } from "./AuthForms";
 import Error from "./Error";
-
+import { withRouter } from 'react-router';
 class SignInForm extends Component {
   render() {
     return this.props.loading ? (
@@ -14,13 +14,14 @@ class SignInForm extends Component {
     ) : this.props.error ? (
       <Error />
     ) : (
-      <SignInFormik
-        closeModal={this.props.closeModal}
-        userId={this.props.userId}
-        invalid={this.props.invalid}
-        onAuth={this.props.onAuth}
-      />
-    );
+          <SignInFormik
+            closeModal={this.props.closeModal}
+            userId={this.props.userId}
+            invalid={this.props.invalid}
+            onAuth={this.props.onAuth}
+            redirect={this.props.history}
+          />
+        );
   }
 }
 
@@ -42,4 +43,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignInForm);
+)(withRouter(SignInForm));

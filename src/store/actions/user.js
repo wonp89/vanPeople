@@ -9,7 +9,8 @@ export const userStart = () => {
   };
 };
 
-export const userSuccess = userData => {
+export const userSuccess = (userData, redirect) => {
+  redirect.push('/')
   return {
     type: actionTypes.USER_SUCCESS,
     userData: userData
@@ -23,35 +24,35 @@ export const userFail = error => {
   };
 };
 
-export const userSignout = (props) => {
-  props.push('/');
+export const userSignout = (redirect) => {
+  redirect.push('/');
   return {
     type: actionTypes.USER_SIGNOUT
   };
 };
 
-export const checkUserTimeout = (expirationTime, props) => {
+export const checkUserTimeout = (expirationTime, redirect) => {
   console.log(`user expire in 2hrs`)
   return dispatch => {
     setTimeout(() => {
-      dispatch(userSignout(props));
+      dispatch(userSignout(redirect));
     }, expirationTime * 1000); // 2hrs
   };
 };
 
-export const userCheckState = (props) => {
+export const userCheckState = (redirect) => {
   return dispatch => {
     const token = localStorage.getItem('token')
     if (!token) {
-      dispatch(userSignout(props));
+      dispatch(userSignout(redirect));
     } else {
       // 2hrs after current time
       const expirationTime = new Date(jwt.decode(token).exp * 1000)
       if (expirationTime >= new Date()) {
         //future time(2hrs after) - current time
-        dispatch(checkUserTimeout(((expirationTime.getTime() - new Date().getTime()) / 1000), props))
+        dispatch(checkUserTimeout(((expirationTime.getTime() - new Date().getTime()) / 1000), redirect))
       } else {
-        dispatch(userSignout(props))
+        dispatch(userSignout(redirect))
       }
     }
   }
@@ -63,7 +64,7 @@ export const userSignedIn = () => {
   };
 };
 
-export const user = ({ email, password, passwordConfirmation = null }) => {
+export const user = ({ email, password, passwordConfirmation = null }, redirect) => {
   return async dispatch => {
     dispatch(userStart());
     let userData = {
@@ -80,8 +81,8 @@ export const user = ({ email, password, passwordConfirmation = null }) => {
     try {
       const res = await axios.post(url, userData);
       console.log(res);
-      dispatch(userSuccess(res.data));
-      // dispatch(checkUserTimeout(jwt.decode(res.data.jwt).exp));
+      dispatch(userSuccess(res.data, redirect));
+      dispatch(checkUserTimeout(jwt.decode(res.data.jwt).exp), redirect);
     } catch (error) {
       console.log(error);
       dispatch(userFail(error));
